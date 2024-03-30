@@ -70,13 +70,18 @@ def place_id_post(city_id):
                  methods=['PUT'], strict_slashes=False)
 def place_id_put(place_id):
     """update a plaxe with endpoint /places/<plae_id>"""
-    if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 400
-    obj = storage.get(Place, place_id)
-    if obj is None:
+    place = storage.get(Place, place_id)
+    if place is None:
         abort(404)
-    for key, value in request.get_json().items():
-        if key not in ['id', 'user_id', 'city_id', 'created_at', 'updated']:
-            setattr(obj, key, value)
-    storage.save()
-    return jsonify(obj.to_dict())
+    if request.is_json:
+        json_data = request.get_json()
+        for key, value in json_data.items():
+            if key == "id" or key == "created_at" or key == "updated_at"\
+                            or key == "user_id" or key == "city_id":
+                continue
+            else:
+                setattr(place, key, value)
+        storage.save()
+        return jsonify(Place.to_dict(place)), 200
+    else:
+        abort(400, "Not a JSON")
