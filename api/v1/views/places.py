@@ -47,23 +47,20 @@ def place_id_post(city_id):
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
-    if request.is_json:
-        json_data = request.get_json()
-        json_data["city_id"] = city_id
-        if "user_id" in json_data:
-            user = storage.get(User, json_data['user_id'])
-            if user is None:
-                abort(404)
-            if "name" not in json_data:
-                abort(400, "Missing name")
-            new_place = Place(**json_data)
-            storage.new(new_place)
-            storage.save()
-            return jsonify(new_place.to_dict()), 201
-        else:
-            abort(400, "Missing user_id")
-    else:
-        abort(400, "Not a JSON")
+    if not request.get_json():
+        return jsonify({"error": "Not a JSON"}), 400
+    if 'user_id' not in request.get_json():
+        return jsonify({"error": "Missing user_id"}), 400
+    if 'name' not in request.get_json():
+        return jsonify({"error": "Missing name"}), 400
+    kwargs = request.get_json()
+    kwargs['city_id'] = city_id
+    user = storage.get(User, kwargs['user_id'])
+    if user is None:
+        abort(404)
+    obj = Place(**kwargs)
+    obj.save()
+    return jsonify(obj.to_dict()), 201
 
 
 @app_views.route("/places/<place_id>",
