@@ -79,7 +79,8 @@ def place_id_put(place_id):
             if key == "id" or key == "created_at" or key == "updated_at"\
                             or key == "user_id" or key == "city_id":
                 continue
-            setattr(place, key, value)
+            else:
+                setattr(place, key, value)
         storage.save()
         return jsonify(Place.to_dict(place)), 200
     else:
