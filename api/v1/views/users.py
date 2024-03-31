@@ -10,7 +10,7 @@ from models.user import User
 def get_users():
     """get all users from storage"""
     all = storage.all(User)
-    users = [user.to_dict() for user in all]
+    users = [user.to_dict() for user in all.values()]
     return jsonify(users)
 
 
