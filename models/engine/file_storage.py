@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Contains the FileStorage class
-"""
+"""Module that contains the FileStorage class"""
 
 import json
 from models.amenity import Amenity

@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Contains the class DBStorage
-"""
+"""Module that contains the class DBStorage"""
 
 import models
 from models.amenity import Amenity
