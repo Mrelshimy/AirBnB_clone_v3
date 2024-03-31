@@ -38,12 +38,12 @@ def delete_user(user_id):
 def create_user():
     """create a new user"""
     if not request.is_json:
-        return abort(400, 'Not a JSON')
+        return jsonify({"error": "Not a JSON"}), 400
     data = request.get_json()
     if 'email' not in data.keys():
-        return abort(400, 'Missing email')
+        return jsonify({"error": "Missing email"}), 400
     if 'password' not in data.keys():
-        return abort(400, 'Missing password')
+        return jsonify({"error": "Missing password"}), 400
     user = User(**data)
     user.save()
     return jsonify(user.to_dict()), 201
@@ -56,7 +56,7 @@ def update_user(user_id):
     if not user:
         return abort(404)
     if not request.is_json:
-        return abort(400, 'Not a JSON')
+        return jsonify({"error": "Not a JSON"}), 400
     data = request.get_json()
     data.pop('id', 0)
     data.pop('email', 0)
