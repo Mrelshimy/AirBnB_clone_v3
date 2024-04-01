@@ -68,7 +68,7 @@ class BaseModel:
         new_dict["__class__"] = self.__class__.__name__
         if "_sa_instance_state" in new_dict:
             del new_dict["_sa_instance_state"]
-        if keep_pass:
+        if not keep_pass:
             new_dict.pop('password', 0)
         return new_dict
 
