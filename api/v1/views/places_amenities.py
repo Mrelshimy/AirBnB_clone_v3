@@ -13,13 +13,7 @@ def get_amenities(place_id):
     place = storage.get(Place, place_id)
     if not place:
         return abort(404)
-    if not place.amenity_ids:
-        amenities = [amenity.to_dict() for amenity in place.amenities]
-    else:
-        amenities = []
-        for id in place.amenity_ids:
-            amenity = storage.get(Amenity, id)
-            amenities.append(amenity.to_dict())
+    amenities = [amenity.to_dict() for amenity in place.amenities]
     return jsonify(amenities)
 
 
