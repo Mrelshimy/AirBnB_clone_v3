@@ -53,5 +53,6 @@ def post_amenity(place_id, amenity_id):
         place.amenities.append(amenity)
     else:
         place.amenity_ids.append(amenity.id)
+    storage.new(new_amenity)
     storage.save()
     return jsonify(new_amenity.to_dict()), 201
